@@ -2268,6 +2268,7 @@
 						<div class="segmented-control">
 							<button id="fps-uncapped" class="hud-btn active">UNCAPPED</button>
 							<button id="fps-60" class="hud-btn">60 FPS</button>
+							<button id="fps-120" class="hud-btn" title="Experimental: requires native 120 FPS support">120 FPS (TEST)</button>
 							<button id="fps-30" class="hud-btn">30 FPS</button>
 						</div>
 					</div>
@@ -3314,13 +3315,14 @@
 			if (boostOffBtn) boostOffBtn.classList.toggle('active', !gpuBoost);
 
 			const valFpsMode = document.getElementById('val-fps-mode');
-			if (valFpsMode) valFpsMode.textContent = fpsMode === '0' ? 'UNCAPPED' : (fpsMode === '1' ? '60 FPS' : '30 FPS');
+			if (valFpsMode) valFpsMode.textContent = fpsMode === '0' ? 'UNCAPPED' : (fpsMode === '1' ? '60 FPS' : (fpsMode === '3' ? '120 FPS (EXPERIMENTAL)' : '30 FPS'));
 			const fpsUncappedBtn = document.getElementById('fps-uncapped');
 			const fps60Btn = document.getElementById('fps-60');
 			const fps30Btn = document.getElementById('fps-30');
 			if (fpsUncappedBtn) fpsUncappedBtn.classList.toggle('active', fpsMode === '0');
 			if (fps60Btn) fps60Btn.classList.toggle('active', fpsMode === '1');
 			if (fps30Btn) fps30Btn.classList.toggle('active', fpsMode === '2');
+			if (fps120Btn) fps120Btn.classList.toggle('active', fpsMode === '3');
 
 			const sliderTouchScale = document.getElementById('slider-touch-scale');
 			const valTouchScale = document.getElementById('val-touch-scale');
@@ -3569,12 +3571,20 @@
 			const fpsUncappedBtn = document.getElementById('fps-uncapped');
 			const fps60Btn = document.getElementById('fps-60');
 			const fps30Btn = document.getElementById('fps-30');
+			const fps120Btn = document.getElementById('fps-120');
 			if (fpsUncappedBtn) fpsUncappedBtn.addEventListener('click', (e) => {
 				e.stopPropagation(); vibrate(15);
 				fpsMode = '0';
 				localStorage.setItem('gta_fps_mode', '0');
 				updateSettingsUI();
 				showGamepadToast('FRAME LIMITER: UNCAPPED', 'Max GPU Throughput');
+			});
+			if (fps120Btn) fps120Btn.addEventListener('click', (e) => {
+				e.stopPropagation(); vibrate(15);
+				fpsMode = '3';
+				localStorage.setItem('gta_fps_mode', '3');
+				updateSettingsUI();
+				showGamepadToast('120 FPS: EXPERIMENTAL', 'Requires native renderer support; restart may be needed');
 			});
 			if (fps60Btn) fps60Btn.addEventListener('click', (e) => {
 				e.stopPropagation(); vibrate(15);
